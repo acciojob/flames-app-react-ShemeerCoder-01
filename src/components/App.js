@@ -1,5 +1,5 @@
 // import React, {Component, useState} from "react";
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import '../styles/App.css';
 // import { size } from "cypress/types/lodash";
 
@@ -10,7 +10,7 @@ import '../styles/App.css';
 //         let [size,setSize] = useState(-1);
 
 //         function check(){
-            
+
 //             if(fname == '' || secname == ''){
 //                 return;
 //             }
@@ -40,48 +40,74 @@ import '../styles/App.css';
 //     }
 // }
 
-function App(){
-    let [fname,setFname] = useState('');
-    let [secname,setSecname] = useState('');
-    let [size,setSize] = useState(-1);
-    let [flag,setFlag] = useState(false);
+function App() {
+    let [fname, setFname] = useState('');
+    let [secname, setSecname] = useState('');
+    let [size, setSize] = useState(-1);
+    let [flag, setFlag] = useState(false);
 
-    function check(){
-        
-        if(fname === '' || secname === ''){
-           setFlag(true);
-           return;
-        }
-        else{
-            for(let i = 0; i < fname.length; i++){
-                for(let j = 0; j < secname.length; j++){
-                    if(fname.charAt(i) == secname.charAt(i)){
-                        fname =fname.slice(0,i) + fname.slice(i+1);
-                        secname = secname.slice(0,i) + secname.slice(i+1);
-                    }
-                }
+    function check() {
+
+        // if(fname === '' || secname === ''){
+        //    setFlag(true);
+        //    return;
+        // }
+        // else{
+        //     for(let i = 0; i < fname.length; i++){
+        //         for(let j = 0; j < secname.length; j++){
+        //             if(fname.charAt(i) == secname.charAt(j)){
+        //                 fname =fname.slice(0,i) + fname.slice(i+1);
+        //                 secname = secname.slice(0,j) + secname.slice(j+1);
+        //             }
+        //         }
+        //     }
+        //    setFlag(false);
+        //    setSize(fname.length + secname.length);
+
+        // }
+
+        let count = 0;
+        let remainingString1 = '';
+        let remainingString2 = '';
+
+        for (let i = 0; i < fname.length; i++) {
+            const char = fname[i];
+            if (!secname.includes(char) || secname.includes(char)) {
+                remainingString1 += char;
+            } else {
+                remainingString2 += char;
+                count++;
             }
-           setFlag(false);
-           setSize(fname.length + secname.length);
-
         }
+
+        for (let i = 0; i < secname.length; i++) {
+            const char = secname[i];
+            if (!fname.includes(char) || fname.includes(char)) {
+                remainingString2 += char;
+            } else {
+                remainingString1 += char;
+                count++;
+            }
+        }
+        setFlag(false);
+        setSize(remainingString1.length+remainingString2.length) ;
     }
 
-    function clear(){
+    function clear() {
         setFname('');
         setSecname('');
         setFlag(false);
         setSize(-1);
     }
 
-    return(
+    return (
         <div id="main">
-          <input name="name1" value={fname} data-testid="input1" onChange={(e)=> setFname(e.target.value)} type="text" placeholder="Enter first name"/>
-          <input name="name2" value={secname} data-testid="input2" onChange={(e)=> setSecname(e.target.value)} type="text" placeholder="Enter second name"/>
-          <button onClick={check} data-testid="calculate_relationship">Calculate Relationship Future</button>
-          <button onClick={clear} data-testid="clear">Clear</button>
-          {/* {flag?<h3>Please Enter valid input</h3>:null} */}
-          {flag?<h3>Please Enter valid input</h3>:size % 6 ==1?<h3>Friends</h3>:size%6 == 2?<h3>Love</h3>:size % 6 ==3?<h3>Affection</h3>:size % 6 ==4?<h3>Marriage</h3>:size % 6 ==5?<h3>Enemy</h3>:size % 6 ==0?<h3>Siblings</h3>:null}
+            <input name="name1" value={fname} data-testid="input1" onChange={(e) => setFname(e.target.value)} type="text" placeholder="Enter first name" />
+            <input name="name2" value={secname} data-testid="input2" onChange={(e) => setSecname(e.target.value)} type="text" placeholder="Enter second name" />
+            <button onClick={check} data-testid="calculate_relationship">Calculate Relationship Future</button>
+            <button onClick={clear} data-testid="clear">Clear</button>
+            {/* {flag?<h3>Please Enter valid input</h3>:null} */}
+            {flag ? <h3>Please Enter valid input</h3> : size % 6 == 1 ? <h3>Friends</h3> : size % 6 == 2 ? <h3>Love</h3> : size % 6 == 3 ? <h3>Affection</h3> : size % 6 == 4 ? <h3>Marriage</h3> : size % 6 == 5 ? <h3>Enemy</h3> : size % 6 == 0 ? <h3>Siblings</h3> : null}
         </div>)
 }
 
